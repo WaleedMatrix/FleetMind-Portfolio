@@ -10,7 +10,7 @@ FleetMind is an end-to-end machine monitoring and investigation portfolio projec
 - Implemented model-version-checked TreeSHAP investigation and global attribution across 512 seeded training rows, using the same fitted feature transformation as inference.
 - Built an at-least-once Redpanda ingestion path with database idempotency and resumable SSE. The two-worker local test committed 41.6 assessments/s with 6.38 s p95 observation-to-commit latency at the recorded workload.
 - Built hybrid PostgreSQL retrieval and typed Copilot evidence checks that passed 51 deterministic cases covering tool routing, citation integrity, and abstention.
-- Reduced paired desktop telemetry browser long tasks from 8 to 1, with a measured sampled heap increase from 9.92 to 17.07 MiB.
+- Reduced long tasks from 8 to 1 in paired local desktop telemetry recordings, with a sampled heap increase from 9.92 to 17.07 MiB.
 
 [Model evaluation](../reports/final_test_metrics.json) · [SHAP sample](../reports/global_shap_xgboost_v1.json) · [Copilot results](../reports/copilot_scripted_m11b.json) · [Benchmark methods](mlops.md)
 
@@ -20,7 +20,7 @@ I built FleetMind to explore what it takes to carry a machine assessment from se
 
 On the synthetic AI4I holdout, the model reached 0.8655 average precision. A two-worker local telemetry benchmark committed 41.6 assessments per second. The application labels synthetic inputs and exposes the limits of the score and explanations.
 
-The portfolio edition demonstrates these workflows with recorded assessments and scripted Copilot examples. I’ll add the demo and repository links after release validation.
+The portfolio edition demonstrates these workflows with recorded assessments and scripted Copilot examples. [Live demo](https://fleet-mind-portfolio.vercel.app/) · [Source](https://github.com/WaleedMatrix/FleetMind-Portfolio)
 
 ## Two-minute demo script
 
@@ -31,7 +31,7 @@ The portfolio edition demonstrates these workflows with recorded assessments and
 | 0:40–1:00 | Asset detail and replay. “A worker validates asset identity, saves assessments idempotently, and streams committed changes. This view replays a recorded sequence.” |
 | 1:00–1:18 | Model Intelligence and Health. “The held-out average precision is 0.8655. Health compares source-scoped distributions to a training reference.” |
 | 1:18–1:38 | Copilot example and citation. “This is a scripted example from the test harness. The full local app validates evidence and abstains when sources are insufficient.” |
-| 1:38–2:00 | Architecture. “The public frontend runs without a database or a paid model account. Optional CPU inference scores selected readings without persisting them.” |
+| 1:38–2:00 | Architecture. “The public frontend runs on Vercel and shows recorded scores without a database or a model provider account.” |
 
 ## Interview walkthrough
 
@@ -49,4 +49,4 @@ XGBoost · TreeSHAP · FastAPI · PostgreSQL/pgvector · Redpanda · Next.js
 
 Inspect a real frozen model’s assessments on simulated inputs, replay telemetry, and explore cited maintenance examples.
 
-Actions after validation · **View demo**, **Read case study**, **Source**.
+[View demo](https://fleet-mind-portfolio.vercel.app/) · [Read case study](case-study.md) · [Source](https://github.com/WaleedMatrix/FleetMind-Portfolio)

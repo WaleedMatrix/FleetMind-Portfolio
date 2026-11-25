@@ -6,13 +6,13 @@ FleetMind is an AI engineering portfolio project for machine assessment, alert i
 
 ![FleetMind operations dashboard showing simulated assessments and alert history](docs/screenshots/operations-dashboard.jpg)
 
-**Live demo** · URL pending deployment approval.
+**[Live demo](https://fleet-mind-portfolio.vercel.app/)** · Read-only portfolio on Vercel.
 
 [Setup](docs/local-setup.md) · [Deployment](docs/deployment.md) · [Architecture](docs/architecture.md) · [Screenshots](docs/screenshots/README.md) · [Case study](docs/case-study.md)
 
 ## Try FleetMind
 
-The read-only portfolio bundles fictional assets, 144 simulator assessments scored by the frozen model, precomputed SHAP, a replayable telemetry sequence, and scripted Copilot examples. It runs without a database, model provider key, or account. Optional live inference scores a selected reading without saving it.
+The read-only portfolio bundles fictional assets, 144 simulator assessments scored by the frozen model, precomputed SHAP, a replayable telemetry sequence, and scripted Copilot examples. The public demo uses recorded scores and runs without a database, model provider key, or account.
 
 ~~~powershell
 cd frontend
@@ -51,7 +51,7 @@ flowchart LR
 | --- | --- |
 | Held-out AI4I evaluation | Average precision **0.8655**. At threshold **0.50**, recall **0.8676**, precision **0.5842**, F1 **0.6982**. [Report](reports/final_test_metrics.json) |
 | Paired two-worker local telemetry | **41.6 committed assessments/s**, **6.38 s p95** observation to commit at the recorded workload. [Benchmark](reports/telemetry_worker_scaling_m11b.json) |
-| Paired desktop browser recording | Long tasks **8 → 1** with a higher sampled heap of **9.92 → 17.07 MiB**. [Method and reports](docs/mlops.md) |
+| Paired local desktop telemetry recording | Long tasks **8 → 1** with a higher sampled heap of **9.92 → 17.07 MiB**. [Method and reports](docs/mlops.md) |
 | Scripted Copilot regression | **51 cases passed**, covering tool selection, evidence checks, and answer or abstention behavior. [Report](reports/copilot_scripted_m11b.json) |
 
 The AI4I dataset contains **10,000 synthetic observations** with **3.39%** failure prevalence. The classifier uses a stratified holdout, class weighting, and a derived thermal-gap feature. Its scores are uncalibrated. FleetMind assesses a reading for a binary label and provides no validated time-to-failure estimate. SHAP explains model output in raw-margin units. Drift reports compare distributions. Neither signals causation or an independently verified equipment diagnosis. Local benchmarks characterize the reported experiments. [Model card](docs/model-card.md) · [Dataset attribution](docs/data-and-attribution.md)

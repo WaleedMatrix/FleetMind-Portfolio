@@ -1,6 +1,23 @@
 # Release validation
 
-The candidate was validated locally using Windows, Python 3.11, Node.js 22, Edge, Docker Desktop, PostgreSQL 17 with pgvector, and Redpanda. Provider deployment, remote CI, and live provider Copilot evaluation are pending owner approval and authorized access.
+## Public deployment
+
+On 26 November 2026, the [public Vercel deployment](https://fleet-mind-portfolio.vercel.app/) passed the recorded-portfolio walkthrough in fresh Chromium contexts at desktop width (1440 px) and emulated phone widths (412 px and 320 px).
+
+| Check | Result |
+| --- | --- |
+| Dashboard and assets | Dashboard navigation and anchors, alert filtering, asset registry, and forming press detail opened. |
+| Alert investigations and SHAP | The drawer showed original sensor inputs, source, and model version. Contributions and the waterfall displayed with the precomputed explanation label. Closing the drawer returned focus to the selected assessment. |
+| Model Intelligence and Model Health | Global SHAP and the training reference loaded. Changing source, window, and distribution worked. The sparse-source comparison displayed its minimum-sample notice. |
+| Copilot and telemetry | All four recorded examples opened. Three displayed evidence. Simulated telemetry replay advanced, paused, resumed, restarted, and opened an assessment with source event metadata. |
+| Responsive layout and browser console | No document-level horizontal overflow, console warnings or errors, uncaught exceptions, or failed application requests during the walkthrough. |
+| Portfolio boundary | Session lookup and listing, sign-in, sign-out, password changes, admin user listing, and prediction writes returned HTTP 404. Private UI pages redirected to the dashboard. Architecture displayed the recorded scores notice. The optional stateless inference route returned HTTP 503. |
+
+The initial publication commit `10960ec` passed the [GitHub Actions workflow](https://github.com/WaleedMatrix/FleetMind-Portfolio/actions/runs/45702563807) and [Vercel deployment](https://vercel.com/waleed084s-projects/fleet-mind-portfolio/53L2Lki95Q53ixkkzmuAYNGGs6ny). See the publication branch's [Actions history](https://github.com/WaleedMatrix/FleetMind-Portfolio/actions) for later commits. Live-provider Copilot evaluation remains pending.
+
+## Local candidate validation
+
+Local validation used Windows, Python 3.11, Node.js 22, Edge, Docker Desktop, PostgreSQL 17 with pgvector, and Redpanda.
 
 | Check | Result |
 | --- | --- |
@@ -41,7 +58,7 @@ The Linux x86-64 image installed the exact pinned package set from verified PyPI
 | Cold start of the final image with one-tenth CPU | 106.1 s from launch to ready response |
 | Second isolated start with one visible core and no Docker health probe | 80.8 s from launch to ready response |
 
-The first trial with a Python-based health check took 257.3 s from container start to the ready log. The final image uses a lightweight shell probe. Cold startup varied substantially and exceeded the 30-second frontend request deadline. [Raw final measurement](../reports/portfolio_runtime_v1.json) Start with the recorded Vercel profile. The optional Render endpoint needs a real provider smoke test before it is connected to the public deployment. These local measurements do not estimate Render's startup or availability. The constrained service received no browser credentials and made no database connection.
+The first trial with a Python-based health check took 257.3 s from container start to the ready log. The final image uses a lightweight shell probe. Cold startup varied substantially and exceeded the 30-second frontend request deadline. These measurements describe the local Docker Desktop workload. The constrained service received no browser credentials and made no database connection. The public Vercel profile uses recorded scores. [Raw final measurement](../reports/portfolio_runtime_v1.json)
 
 To reproduce the warm equivalence, latency and rate test against a fresh running local container, run:
 

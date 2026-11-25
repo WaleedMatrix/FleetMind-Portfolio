@@ -1,10 +1,10 @@
 # Release security audit
 
-## Publication gate
+## Original repository audit
 
-A reachable Git object contains a 4.3 KB PostgreSQL dump first added in commit `4aa9c54`. The candidate removes `fleetmind_backup.dump` from the release tree. The workspace copy was moved out of the tree of publishable files to an ignored, access-restricted local directory. Its digest was unchanged. Earlier Git commits remain intact.
+A reachable Git object in the original repository contains a 4.3 KB PostgreSQL dump first added in commit `4aa9c54`. The public repository starts at a clean source import. The dump path and the original history are absent from its reachable publication history.
 
-The local history review enumerated 635 reachable objects and scanned 391 blob versions for known private key, cloud, GitHub, LLM token, JWT and database URL formats. Credential-pattern hits were limited to three versions of the environment template with placeholder connection strings. The file-name scan found the dump. Pattern coverage is limited. The audit cannot establish that all formats, binary data, or previously distributed copies are safe. Do not publish the existing history as-is. Use the [clean source procedure](deployment.md#prepare-a-clean-source-repository) or have the owner separately review and authorize remediation of the original remote. If the dump was shared previously, review exposure privately, including any credentials that could be present, and rotate affected secrets.
+The original local history review enumerated 635 reachable objects and scanned 391 blob versions for known private key, cloud, GitHub, LLM token, JWT and database URL formats. Credential-pattern hits were limited to three versions of the environment template with placeholder connection strings. The file-name scan found the dump. Pattern coverage is limited. If the dump was shared previously, review exposure privately, including any credentials that could be present, and rotate affected secrets. [Publication repository](deployment.md#publication-source)
 
 ## Dependency scans
 
@@ -21,4 +21,4 @@ An official Windows CPython 3.11 CPU wheel exists for 2.13.0. The download stall
 
 ## Public request boundaries
 
-The portfolio bridge holds a fixed HTTPS Render origin, accepts only the inference path, caps payload size and forwards no browser session credentials. The service enforces schema, size, upload time, one active inference and a process-wide attempt budget. The shared budget can be exhausted by an individual caller and resets on process restart. The recorded profile remains available during that condition. Private application authorization and auditing remain in [the full local deployment](security.md).
+The public portfolio rejects private API routes and uses recorded scores. If configured, the optional hosted inference bridge uses a fixed HTTPS Render origin, accepts only the inference path, caps payload size and forwards no browser session credentials. The service enforces schema, size, upload time, one active inference and a process-wide attempt budget. The shared budget can be exhausted by an individual caller and resets on process restart. The recorded profile remains available during that condition. Private application authorization and auditing are part of [the full local deployment](security.md).

@@ -1,11 +1,12 @@
 # Changelog
 
-## v1.0.0 release candidate
+## v1.0.0
 
-- Added a read-only portfolio profile with simulator assessments, version-checked precomputed SHAP, playback, cited scripted Copilot examples, and measured benchmark context.
-- Added a separate bounded CPU inference container and Vercel and Render deployment configuration.
-- Added clean-room fixture generation, frozen artifact integrity verification, CI, and release validation instructions.
-- Consolidated architecture, API, operations, MLOps, security, setup, and attribution guidance. Added the case study, browser captures, and portfolio materials.
-- Removed the previously tracked database dump from the release tree. The history remains intact and needs a clean source export or separately approved remediation before publication.
+- Published a read-only Vercel portfolio with 144 simulated assessments scored by the frozen XGBoost model, asset history, alert investigations, precomputed SHAP contributions and waterfalls, and Model Health comparisons.
+- Added recorded telemetry replay and four scripted Copilot examples, including evidence citations and an abstention example.
+- Added frozen artifact verification, GitHub Actions validation, and a separate stateless CPU inference container for optional use. The public deployment uses recorded scores.
+- Published the case study, deployment guide, benchmark methods, and dataset attribution in the clean publication repository.
 
-The full local workspace keeps its existing authentication, assets, inference, knowledge retrieval, private Copilot, telemetry and observability. The portfolio requires no database migration. Local Model Health uses the existing optional revision `0008_model_health_lookup`.
+The synthetic AI4I holdout yielded 0.8655 average precision. The telemetry and browser performance figures come from local benchmarks. Live-provider Copilot evaluation and real-equipment generalization remain open.
+
+[Live demo](https://fleet-mind-portfolio.vercel.app/) · [Release validation](docs/release-validation.md) · [Case study](docs/case-study.md)

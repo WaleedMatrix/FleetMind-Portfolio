@@ -264,14 +264,12 @@ python -m uvicorn fleetmind.api.main:app --host 127.0.0.1 --port 8000
 ```
 
 Seed the knowledge corpus from the previous section before asking knowledge
-questions. To test the API, send a question and optionally a registered
-`asset_id` and up to four recent context messages.
-
-```powershell
-Invoke-RestMethod http://127.0.0.1:8000/api/v1/copilot/status
-$body = @{ question = 'How is the thermal gap calculated?' } | ConvertTo-Json
-Invoke-RestMethod http://127.0.0.1:8000/api/v1/copilot/chat -Method Post -ContentType 'application/json' -Body $body
-```
+questions. Sign in to the full local frontend as an engineer or administrator,
+open Copilot, and ask “How is the thermal gap calculated?” API clients can use
+`GET /api/v1/copilot/status` and `POST /api/v1/copilot/chat` with an authenticated
+session. The chat request accepts a question, an optional registered `asset_id`,
+and up to four recent context messages. Include the configured origin and the
+session-bound CSRF header on writes. [Authentication](security.md#authentication-and-session-lifecycle)
 
 Responses include a status, answer, cited facts, record references, limitations,
 and diagnostics. Clarification and insufficient evidence use HTTP 200, invalid
@@ -370,29 +368,23 @@ PostgreSQL database supplied as `FLEETMIND_MIGRATION_TEST_DATABASE_URL`.
 
 ### Conversation API
 
-The following examples use a shell configured as in the provider section above.
-Use a registered asset ID or an existing, compatible prediction ID in the optional
-`asset_id` and `prediction_id` fields when creating or updating a conversation.
+Use an engineer or administrator session for `/api/v1/copilot/conversations` and
+its subroutes. Writes also require the configured origin and session-bound CSRF
+header. Use a registered asset ID or an existing, compatible prediction ID in the
+optional `asset_id` and `prediction_id` fields when creating or updating a
+conversation. [Authentication](security.md#authentication-and-session-lifecycle)
 
-```powershell
-$copilot = 'http://127.0.0.1:8000/api/v1/copilot/conversations'
-$thread = Invoke-RestMethod $copilot -Method Post -ContentType 'application/json' -Body '{"title":"Alert review"}'
-$id = $thread.id
-Invoke-RestMethod "${copilot}?q=alert&archived=false&limit=20&offset=0"
-Invoke-RestMethod "$copilot/$id"
-Invoke-RestMethod "$copilot/$id/messages?limit=25"
-Invoke-RestMethod "$copilot/$id" -Method Patch -ContentType 'application/json' -Body '{"title":"Day shift review","archived":false}'
+| Operation | Method and suffix under `/api/v1/copilot/conversations` |
+| --- | --- |
+| Create a conversation | `POST` to the collection with a title |
+| List and search | `GET` the collection with `?q=alert&archived=false&limit=20&offset=0` |
+| View or edit a conversation | `GET /{id}` or `PATCH /{id}` |
+| Read recent messages | `GET /{id}/messages?limit=25` |
+| Stream a reply | `POST /{id}/messages/stream` with `request_id` (UUID) and `question` |
+| Cancel a request | `POST /{id}/requests/{request_id}/cancel` |
+| Permanently delete the conversation and its messages | `DELETE /{id}?confirm={id}` |
 
-$requestId = [Guid]::NewGuid().ToString()
-$payload = @{ request_id = $requestId; question = 'How is the thermal gap calculated?' } | ConvertTo-Json -Compress
-# Pipe the body to curl to preserve JSON quotes in Windows PowerShell.
-$payload | curl.exe --no-buffer -H 'Content-Type: application/json' --data-binary '@-' "$copilot/$id/messages/stream"
-
-# Run in a separate terminal with the same conversation and request IDs.
-Invoke-RestMethod "$copilot/$id/requests/$requestId/cancel" -Method Post
-# Permanently deletes the conversation and messages only, after confirmation.
-Invoke-RestMethod "${copilot}/${id}?confirm=$id" -Method Delete
-```
+For the collection itself, use `/api/v1/copilot/conversations` without a trailing slash.
 
 The list returns `next_offset` when another page exists. Messages are
 returned in chronological order within each page. Pass `next_before_id` as
@@ -785,13 +777,13 @@ offers inspection only.
 
 ### Reproduce the live workflow
 
-Use the disposable database and broker procedure from Milestone 10A. Apply
-revision 0006 on the disposable database, register two test assets, and run a
-production Next.js build with `FLEETMIND_API_URL` pointing at that FastAPI
-instance. In separate terminals open the feed and submit a finite workload.
+Use the disposable database and broker procedure above. Upgrade the disposable
+database to Alembic head, bootstrap a test account, register two test assets,
+and run a production Next.js build with `FLEETMIND_API_URL` pointing at that
+FastAPI instance. Sign in and open Telemetry in the browser, then submit a
+finite workload from the Git root with the test broker environment active.
 
 ```powershell
-curl.exe --no-buffer http://127.0.0.1:8000/api/v1/telemetry/stream
 python -m scripts.produce_telemetry --asset press-01 --asset press-02 --rate 50 --count 100
 ```
 

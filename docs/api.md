@@ -22,6 +22,8 @@ Read endpoints generally use bounded limit and offset. The committed assessment 
 
 ## Hosted profile
 
+The [public Vercel deployment](https://fleet-mind-portfolio.vercel.app/) uses recorded scores. Private bridge routes such as `/api/fleetmind/auth/me` and `/api/fleetmind/predict` return 404 there.
+
 The separate [portfolio app](../src/fleetmind/hosted.py) exposes `GET /health` and `POST /infer`. The web bridge exposes only `POST /api/fleetmind/demo/infer`. A reading is JSON with `machine_type` (L, M or H), `air_temperature_k`, `process_temperature_k`, `rotational_speed_rpm`, `torque_nm` and `tool_wear_min`. The response includes `model_version`, `failure_score`, `predicted_failure` and `alert_level`.
 
 The hosted API returns 413 for oversized uploads, 415 for incorrect media type, 422 for invalid values, and 429 with Retry-After when its shared budget or slot is exhausted. The bridge returns a bounded 503 for cold, unavailable or invalid upstream responses. No assessments are persisted. Local users continue using the authenticated APIs.

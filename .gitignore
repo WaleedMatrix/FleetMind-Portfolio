@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Data
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Model artifacts
+artifacts/*
+!artifacts/.gitkeep
+*.pkl
+*.joblib
+*.pt
+*.pth
+!artifacts/models/
+artifacts/models/*
+!artifacts/models/xgboost_v1.joblib
+!artifacts/models/xgboost_v1.metadata.json
+
+# Logs
+logs/
+*.log
+*.dump
+*.sqlite
+*.sqlite3
+*.token
+*.dpapi
+*.pem
+*.pfx
+*.p12
+*.key
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
